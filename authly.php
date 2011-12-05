@@ -87,11 +87,44 @@ class Authly {
 	
 	// ---------------------------------------------------------------------
 	
+	public static function update_preferences($data)
+	{
+		$curr = static::get_preferences();
+		if ( ! empty($curr))
+		{
+			$curr = json_decode($curr);
+		}
+		
+		foreach ($data as $key => $value)
+		{
+			$curr->$key = $value;
+		}
+		
+		return DB::table(static::$table_user)->where('id', '=', self::get_id())->update(array(
+			'preferences' => json_encode($curr)
+		));
+	}
+	
+	// ---------------------------------------------------------------------
+	
 	public static function is($role)
 	{
 		return static::belongs($role);
 	}
 	
+	// ---------------------------------------------------------------------
+	
+	public static function pref($key)
+	{
+		$pref = static::get_preferences();
+		if ( ! $pref)
+		{
+			return NULL;
+		}
+		
+		$prefs = json_decode($pref);
+		return $prefs->{$key};
+	}
 	
 	// ---------------------------------------------------------------------
 	
