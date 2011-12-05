@@ -90,11 +90,14 @@ class Authly {
 	public static function update_preferences($data)
 	{
 		$curr = static::get_preferences();
-		if ( ! empty($curr))
-		{
-			$curr = json_decode($curr);
-		}
 		
+		if (empty($curr))
+		{
+			$curr = '{}';
+		}
+
+		$curr = json_decode($curr);
+	
 		foreach ($data as $key => $value)
 		{
 			$curr->$key = $value;
